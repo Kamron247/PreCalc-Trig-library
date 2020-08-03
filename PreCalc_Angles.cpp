@@ -1,64 +1,93 @@
-// PreCalc_Angles.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#pragma once
+/*=========================
+	   PreCalc Library
+  =========================
+  -
+  =========================
+  + nameAngle(double) : string
+  + supplementary(double) : double
+  + complimentary(double) : double
+  + toDegree(double) : double
+  + toRadians(double) : double
+
+  =========================*/
 
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
+#include <map>
 
 using namespace std;
 
-double angleName(double);
-
-int main()
-{
-	auto deg = angleName(10.91);
-	cout << deg;
-}
-
 //Name the angle
-double angleName(double deg) {
-	//check is its less than or equal to 45*n
-	//[0, 90, 180, 360]
+string nameAngle(double degree) {
+	string angleName;
+	map<double, string> angles = { 
+		{0, "0 degree"}, {90, "Right"},
+		{180, "Straight"}, {360, "360 degree"} };
+	
+	//find a number less than or equal to the given degree
+	//	- in order for the test to work
+	//	  given degree should be positive at all times
+	degree *= degree > 0? 1 : -1;
 
-	//when its less than x and greater than y.. its a defined angle
-	// if its equal to either x or y, then its a different predefined angle
-	// loop throught with 2 counters, x is 1 ahead of y
-	// when the loop reaches the last box, stop counting x, same for y
+	//find the angle by going through the map
+	// if its found then assign angle name
+	for (auto angle : angles) {
+		if (angle.first == degree) {
+			angleName = angle.second;
+		}
+	}
 
-	//between 180 and 360
-	// subtract 180, then run through the nomal loop
+	//if the angle isnt found then its a special case
+	if (angleName.empty()) {
+		angleName = degree < 90? "Acute" : "Obtuse";
+	}
 
-	//Greater than 360
-	//		int n = x/360 (n must be a whole number not rounded) 
-	//		subtract 360*n
-	//then run through normal loop
+	return angleName;
 }
 
-/*
 //Get the supplementary angle
-double supplementary() {
-
+double supplementary(double degree) {
+	//when the given degree is less than 180
+	// we want the difference between given degree and 180
+	return 180 - degree;
 }
 
 //Get the complimentary angle
-double complimentary()
+double complimentary(double degree)
 {
-
+	return 90 - degree;
 }
 
 //Convert input to degrees, radians, or DMS
 double toDegree() {
-
+	//interperate what type the input is
+	//	radians? degrees?
 }
+
 double toRadians() {
-
+	//interperate what type the input is
+	//	radians? degrees?
 }
+
+/*
 string toDms() {
 
 }
+*/
 
 //Coterminal angle
 double coterminal() {
 
 }
-*/
+
+
+int main() {
+
+	//Name the angle test
+	cout << nameAngle(-90.1);
+
+	return 0;
+}
